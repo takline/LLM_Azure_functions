@@ -71,6 +71,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 key, value = pair.split('=', 1)
                 cookie = cipher_suite.decrypt(value.encode()).decode()
                 cookies.append(cookie)
+    cookie_send = SimpleCookie()
+    for cookie_i in cookies:
+        cookie_send.load(cookie_i)
     headers = {
         "Set-Cookie": SimpleCookie('PID='+json.dumps(cookies)),
     }
