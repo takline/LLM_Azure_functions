@@ -8,5 +8,3 @@ azure.identity
 openai
 requests
 cryptography
-revChatGPT
-OpenAIAuth
