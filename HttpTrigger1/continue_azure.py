@@ -18,7 +18,7 @@ MAX_TOKENS_FOR_MODEL = {
 
 def run_azure_api(input_body):
     chunks = Azure.split_to_chunks(json.dumps(input_body), Azure.ENCRYPTIONKEY)
-    response = requests.post('http://localhost:7071/api/HttpTrigger1', cookies=chunks)
+    response = requests.post('https://llms0461234.azurewebsites.net/api/HttpTrigger1', cookies=chunks)
     encrypted_output = Azure.parse_to_dict(response.text)
     decrypted_output_str = Azure.combine_from_chunks(encrypted_output, Azure.ENCRYPTIONKEY)
     return json.loads(decrypted_output_str)

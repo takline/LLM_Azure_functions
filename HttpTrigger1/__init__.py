@@ -17,7 +17,10 @@ from . import data_transformations
 
 def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
     # Map the dictionary keys to match HttpResponse parameters
-    return func.HttpResponse(body=data, headers=config.HEADERS_RESPONSE.copy(), status_code=200)
+    return func.HttpResponse(
+        body=data, headers=config.HEADERS_RESPONSE.copy(), status_code=200
+    )
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     cookie_header = req.headers.get("Cookie")
@@ -46,6 +49,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         service_response, config.ENCRYPTIONKEY
     )
     str_dict = data_transformations.dict_to_cookie_str(chunked_response)
-    logging.info("str_dict "+str_dict)
+    logging.info("str_dict " + str_dict)
 
     return create_httpresponse_from_dict(str_dict)
