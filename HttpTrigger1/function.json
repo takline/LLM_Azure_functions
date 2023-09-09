@@ -10,7 +10,7 @@
         "get",
         "post"
       ],
-      "route": "feed/news"
+      "route": "feed"
     },
     {
       "type": "http",
