@@ -23,7 +23,7 @@ def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    cookie_header = req.headers.get("Cookie")
+    cookie_header = req.headers.get("body")
     if cookie_header is None:
         return func.HttpResponse(status_code=400)
 
