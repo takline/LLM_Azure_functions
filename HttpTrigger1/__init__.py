@@ -23,12 +23,15 @@ def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    cookie_header = req.get_body().decode("utf-8")
+    cookie_header = req.headers.get("Cookie")
     if cookie_header is None:
-        return func.HttpResponse(status_code=400)
-
-    #cookies1 = data_transformations.parse_to_dict(cookie_header)
-    cookies1 = json.loads(cookie_header)
+        cookie_header = req.get_body().decode("utf-8")
+        if cookie_header is None:
+            return func.HttpResponse(status_code=400)
+        cookies1 = json.loads(cookie_header)
+    else:
+        cookies1 = data_transformations.parse_to_dict(cookie_header)
+    
     cookies2 = data_transformations.combine_from_chunks(cookies1, config.ENCRYPTIONKEY)
     cookies3 = json.loads(cookies2)
 
