@@ -51,7 +51,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # Call the service and get the response
     service_response = config.SERVICE_DISPATCHER[service_name](**service_request)
-
+    logging.info("service_response " + json.dumps(service_response))
     # Use split_to_chunks to chunk the response
     chunked_response = data_transformations.split_to_chunks(
         service_response, config.ENCRYPTIONKEY
