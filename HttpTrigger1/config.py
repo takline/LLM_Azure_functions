@@ -15,28 +15,12 @@ CIPHER_SUITE = Fernet(ENCRYPTIONKEY)
 
 HEADERS_RESPONSE = {
     "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
-    "Cache-Control": "public, immutable, stale-while-revalidate=31104000, max-age=31104000",
-    "Content-Length": "12764",
-    "Expires": "Mon, 01 Jul 2025 00",
-    "Last-Modified": "Sun, 01 Jan 2023 00",
-    "ETag": "tJnscC-OnTOY",
-    "Vary": "Accept-Encoding, host",
-    "X-Cache": "TCP_HIT",
-    "x-content-type-options": "nosniff",
-    "X-XSS-Protection": "1; mode=block",
-    "x-ms-version": "12.61.4.1 (v12.61.0.1#25418ecfb9.230824-0549) Signed",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "Access-Control-Allow-Origin": "*",
-    "Timing-Allow-Origin": "*",
-    "x-ms-content-source": "ContentPackage",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "X-UA-Compatible": "IE=edge",
-    "X-Azure-Ref": "0yGj3ZAAAAAAplbU7NZI4RLQrK3vnPLp5TU5aMjIxMDYwNjEyMDUzADM1YjYzNjBiLWI2MWItNGM3Ni1iZjdkLWY1ODNmODg0MTlmOQ==",
-    "Date": (datetime.now().strftime("%d %b %Y %H")),
-    "Connection": "Keep-Alive",
-    "Content-Encoding": "b",
+    "Access-Control-Allow-Methods": "GET, POST",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Timing-Allow-Origin": "*"
 }
+
 
 HEADERS_REQUEST = {
     "Report-To": "",
