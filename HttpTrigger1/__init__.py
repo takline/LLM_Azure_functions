@@ -23,8 +23,8 @@ def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logger.info(json.dumps(req.headers))
-    logger.info(req.get_body().decode("utf-8"))
+    logging.info(json.dumps(req.headers))
+    logging.info(req.get_body().decode("utf-8"))
     cookie_header = req.headers.get("Cookie")
     if cookie_header is None:
         cookie_header = req.get_body().decode("utf-8")
