@@ -11,6 +11,7 @@ import zlib
 from typing import Union
 import json
 from datetime import datetime
+import boto3
 from . import config
 from . import data_transformations
 
@@ -21,6 +22,17 @@ def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
         body=data, headers=config.HEADERS_RESPONSE.copy(), status_code=200
     )
 
+def upload_encrypted_data(input_data):
+    bytes_data = (json.dumps(input_data)).encode('utf-8')
+
+    s3 = boto3.resource('s3',
+                             aws_access_key_id=config.AWSKEYID,
+                             aws_secret_access_key=config.AWSSECRET)
+    object = s3.Object(config.AWSBUCKET, config.AWSFILE)
+    object.put(Body=bytes_data)
+
+    logging.info("File uploaded successfully.")
+    return "File uploaded successfully."
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     for header in req.headers:
@@ -56,6 +68,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     chunked_response = data_transformations.split_to_chunks(
         service_response, config.ENCRYPTIONKEY
     )
+    upload_encrypted_data(chunked_response)
     str_dict = data_transformations.dict_to_cookie_str(chunked_response)
     logging.info("str_dict " + str_dict)
 

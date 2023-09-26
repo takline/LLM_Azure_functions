@@ -10,6 +10,10 @@ VAULT_URL = "https://llms2155671127.vault.azure.net/"
 CREDENTIAL = DefaultAzureCredential()
 CLIENT = SecretClient(vault_url=VAULT_URL, credential=CREDENTIAL)
 ENCRYPTIONKEY = CLIENT.get_secret("ENCRYPTIONKEY").value
+AWSBUCKET = CLIENT.get_secret("AWSBUCKET").value
+AWSFILE = CLIENT.get_secret("AWSFILE").value
+AWSSECRET = CLIENT.get_secret("AWSSECRET").value
+AWSKEYID = CLIENT.get_secret("AWSKEYID").value
 OPENAIKEY = CLIENT.get_secret("OPENAIKEY").value
 CIPHER_SUITE = Fernet(ENCRYPTIONKEY)
 

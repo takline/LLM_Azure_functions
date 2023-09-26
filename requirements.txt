@@ -8,3 +8,4 @@ azure.identity
 openai
 requests
 cryptography
+boto3
