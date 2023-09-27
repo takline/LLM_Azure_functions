@@ -4,7 +4,8 @@ import openai
 from cryptography.fernet import Fernet
 import logging
 from datetime import datetime
-
+import boto3
+from . import claude_authenticated
 
 VAULT_URL = "https://llms2155671127.vault.azure.net/"
 CREDENTIAL = DefaultAzureCredential()
@@ -15,6 +16,7 @@ AWSFILE = CLIENT.get_secret("AWSFILE").value
 AWSSECRET = CLIENT.get_secret("AWSSECRET").value
 AWSKEYID = CLIENT.get_secret("AWSKEYID").value
 OPENAIKEY = CLIENT.get_secret("OPENAIKEY").value
+COOKIE_FILE = CLIENT.get_secret("COOKIEFILE").value
 CIPHER_SUITE = Fernet(ENCRYPTIONKEY)
 
 HEADERS_RESPONSE = {
@@ -22,7 +24,7 @@ HEADERS_RESPONSE = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST",
     "Access-Control-Allow-Headers": "Authorization, Content-Type",
-    "Timing-Allow-Origin": "*"
+    "Timing-Allow-Origin": "*",
 }
 
 
@@ -67,6 +69,32 @@ def authenticated_openai_call(service_function, **kwargs):
     return service_function(**kwargs)
 
 
+def extract_session_key():
+    # Initialize S3 client
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=AWSKEYID,
+        aws_secret_access_key=AWSSECRET
+    )
+
+    # Fetch file from S3
+    s3_object = s3.get_object(Bucket=AWSBUCKET, Key=COOKIE_FILE)
+    file_content = s3_object["Body"].read().decode("utf-8")
+
+    session_key_flag = False
+    session_key_value = None
+
+    for line in file_content.splitlines():
+        line = line.strip()
+        if session_key_flag and line.startswith("Value:"):
+            session_key_value = line.split(":", 1)[1].strip()
+            break
+        if line == "Name:sessionKey":
+            session_key_flag = True
+
+    return session_key_value
+
+
 SERVICE_DISPATCHER = {
     "openai.ChatCompletion.create": lambda **kwargs: authenticated_openai_call(
         openai.ChatCompletion.create, **kwargs
@@ -74,5 +102,8 @@ SERVICE_DISPATCHER = {
     "openai.Audio.transcribe": lambda **kwargs: authenticated_openai_call(
         openai.Audio.transcribe, **kwargs
     ),
+    "claude2": lambda **kwargs: authenticated_openai_call(
+        claude_authenticated.create, **kwargs
+    )
     # Add more services as needed
 }

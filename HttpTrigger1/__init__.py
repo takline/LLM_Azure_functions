@@ -15,7 +15,6 @@ import boto3
 from . import config
 from . import data_transformations
 
-
 def create_httpresponse_from_dict(data: dict) -> func.HttpResponse:
     # Map the dictionary keys to match HttpResponse parameters
     return func.HttpResponse(
