@@ -3,23 +3,14 @@ import json
 from . import config
 
 
-def split_to_chunks(data, key, chunk_size=4000):   
+def split_to_chunks(data):   
     if not isinstance(data, str):
         data = json.dumps(data)
 
-    chunks = {}
-    encrypted_chunks = {}
+    output = {}        
+    output["PID0"] = config.CIPHER_SUITE.encrypt(data.encode()).decode()
     
-    for i in range(0, len(data), chunk_size):
-        chunk_key = str(i // chunk_size)
-        chunks[chunk_key] = data[i:i + chunk_size]
-        
-        encrypted_key = "PID"+str(chunk_key)
-        encrypted_chunk = config.CIPHER_SUITE.encrypt(chunks[chunk_key].encode()).decode()
-        
-        encrypted_chunks[encrypted_key] = encrypted_chunk
-    
-    return encrypted_chunks
+    return output
 
 def combine_from_chunks(chunks, key):
     decrypted_chunks = {}
