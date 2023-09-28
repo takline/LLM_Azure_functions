@@ -16,7 +16,6 @@ AWSFILE = CLIENT.get_secret("AWSFILE").value
 AWSSECRET = CLIENT.get_secret("AWSSECRET").value
 AWSKEYID = CLIENT.get_secret("AWSKEYID").value
 OPENAIKEY = CLIENT.get_secret("OPENAIKEY").value
-COOKIE_FILE = CLIENT.get_secret("COOKIEFILE").value
 CIPHER_SUITE = Fernet(ENCRYPTIONKEY)
 
 HEADERS_RESPONSE = {
@@ -25,8 +24,24 @@ HEADERS_RESPONSE = {
     "Access-Control-Allow-Methods": "GET, POST",
     "Access-Control-Allow-Headers": "Authorization, Content-Type",
     "Timing-Allow-Origin": "*",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Connection": "keep-alive",
+    "Accept-Encoding": "gzip, deflate, br",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
+    "X-UA-Compatible": "IE=edge",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "DNT": "1",
+    "Referer": "https",
+    "Cache-Control": "no-cache",
+    "sec-ch-ua": '"Not/A)Brand";v="99", "Microsoft Edge";v="115", "Chromium";v="115"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "Windows",
+    "Cookie": "MicrosoftApplicationsTelemetryDeviceId=e7c5t0c7-da6d-4763-a41a-341134caf4a3; MSFPC=GUID=7de6351425f64ae3ac57a4f655ffc7fa&HASH=7de6&LV=202307&V=4&LU=1690814652902; browserId=4601243f-3cf5-47cd-8522-9cf4bge7337a; portalId=4601243f-3cf5-47cd-8522-9fs4bae7337a; ai_session=lxZ+S9sPqeVLvIk9Xpl2sY|s693935584394|1693935584394",
+    "Server": "Apache",
+    "Date": (datetime.now().strftime("%d %b %Y %H")),
+    "Pragma": "no-cache",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
 }
-
 
 HEADERS_REQUEST = {
     "Report-To": "",
@@ -78,7 +93,7 @@ def extract_session_key():
     )
 
     # Fetch file from S3
-    s3_object = s3.get_object(Bucket=AWSBUCKET, Key=COOKIE_FILE)
+    s3_object = s3.get_object(Bucket=AWSBUCKET, Key=AWSFILE)
     file_content = s3_object["Body"].read().decode("utf-8")
 
     session_key_flag = False

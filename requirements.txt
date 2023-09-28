@@ -9,4 +9,3 @@ openai
 requests
 cryptography
 boto3
-curl_cffi
